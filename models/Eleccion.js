@@ -26,6 +26,10 @@ const EleccionSchema = Schema({
         ref: 'Usuario',
         required: true
     }
+    ,lists:[{
+        type: Schema.Types.ObjectId,
+        ref: 'Lista'
+    }]
 });
 
 

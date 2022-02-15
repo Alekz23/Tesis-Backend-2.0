@@ -21,7 +21,11 @@ const ListaSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Eleccion',
         required: true
-    }
+    },
+    candidates:[{
+        type: Schema.Types.ObjectId,
+        ref: 'Candidato'
+    }]
 });
 
 

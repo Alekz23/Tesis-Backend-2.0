@@ -1,11 +1,26 @@
 const { response } = require('express');
+const Eleccion = require('../models/Eleccion');
 const Lista = require('../models/Lista');
+const { addTest, addLista, eliminarlistEleccion } = require('./elections');
 
 const getListas = async (req, res = response) => {
 
     const listas = await Lista.find()
     .populate('usuario','nombre')
-                    .populate('eleccion', 'nombre');
+                    .populate('eleccion', 'nombre')
+                    .populate('candidates');
+
+    res.json({
+        ok: true,
+        listas
+    });
+}
+
+
+const getLista = async ( req, res = response )=>{
+    const { id } = req.params;
+
+    const listas = await Lista.findById(id).populate('candidates');
 
     res.json({
         ok: true,
@@ -16,6 +31,7 @@ const getListas = async (req, res = response) => {
 const crearLista = async (req, res = response) => {
 
     const lista = new Lista(req.body);
+    const eleccion = req.body.eleccion;
 
     try {
 
@@ -25,6 +41,8 @@ const crearLista = async (req, res = response) => {
     
 
         const listaGuardado = await lista.save();
+        await addLista(eleccion, listaGuardado)
+        //await addTest(eleccion);
 
         res.json({
             ok: true,
@@ -91,6 +109,10 @@ const eliminarLista = async (req, res = response) => {
 
     const listaId = req.params.id;
     const uid = req.uid;
+    const eleccion = req.id;
+
+    console.log(eleccion, 'que me trae');
+
 
     try {
 
@@ -112,6 +134,7 @@ const eliminarLista = async (req, res = response) => {
 
 
         await Lista.findByIdAndDelete(listaId);
+        //await eliminarlistEleccion("620aaedc7d488912340341e7",listaId);
 
         res.json({ ok: true });
 
@@ -127,9 +150,26 @@ const eliminarLista = async (req, res = response) => {
 }
 
 
+const addCandidate= async (listaId, candidato)=>{
+    try {
+        const lista = await Lista.findById( listaId ).exec();
+        console.log(lista,'metodo addlista');
+        lista.candidates.push(candidato);
+        console.log(lista.lists,'metodo addlista');
+
+        await lista.save();
+    } catch (error) {
+        throw error;
+    }
+}
+
+
 module.exports = {
     getListas,
     crearLista,
     actualizarLista,
-    eliminarLista
+    eliminarLista,
+    getLista,
+    addCandidate
+    
 }

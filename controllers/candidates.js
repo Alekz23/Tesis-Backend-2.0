@@ -1,6 +1,7 @@
 
 const { response } = require('express');
 const Candidato = require('../models/Candidato');
+const { addCandidate } = require('./lists');
 
 const getCandidatos = async( req, res = response ) => {
 
@@ -17,12 +18,15 @@ const getCandidatos = async( req, res = response ) => {
 const crearCandidato = async ( req, res = response ) => {
 
     const candidato = new Candidato( req.body );
+    const lista = req.body.lista;
 
     try {
 
         candidato.usuario = req.uid;
         
         const candidatoGuardado = await candidato.save();
+        await addCandidate(lista, candidatoGuardado)
+
 
         res.json({
             ok: true,

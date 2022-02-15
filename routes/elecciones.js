@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 
-const { getElecciones, eliminarEleccion, actualizarEleccion, crearEleccion } = require('../controllers/elections');
+const { getElecciones, eliminarEleccion, actualizarEleccion, crearEleccion, getEleccion } = require('../controllers/elections');
 const { existeEleccionPorId } = require('../helpers/db-validators');
 const { isDate } = require('../helpers/isDate');
 const { validarCampos } = require('../middlewares/validar-campos');
@@ -22,11 +22,11 @@ const router = Router();
 router.get('/', getElecciones );
 
 // Obtener una categoria por id - publico
-// router.get('/:id',[
-//     check('id', 'No es un id de Mongo válido').isMongoId(),
-//     check('id').custom( existeEleccionPorId ),
-//     validarCampos,
-// ], obtenerEleccion );
+router.get('/:id',[
+    check('id', 'No es un id de Mongo válido').isMongoId(),
+    check('id').custom( existeEleccionPorId ),
+    validarCampos,
+], getEleccion);
 
 // Crear categoria - privado - cualquier persona con un token válido
 router.post('/', [ 
