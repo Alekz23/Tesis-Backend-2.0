@@ -22,6 +22,9 @@ const ListaSchema = Schema({
         ref: 'Eleccion',
         required: true
     },
+    img:{
+        type: String,
+    },
     candidates:[{
         type: Schema.Types.ObjectId,
         ref: 'Candidato'

@@ -6,7 +6,7 @@ const bcryptjs = require('bcryptjs');
  
 const crearUsuario = async(req, res = response ) => {
 
-    const { correo, password } = req.body;
+    const { correo, password, cedula} = req.body;
 
     try {
         let usuario = await Usuario.findOne({ correo });
@@ -18,6 +18,7 @@ const crearUsuario = async(req, res = response ) => {
             });
         }
 
+       
         usuario = new Usuario( req.body );
     
         // Encriptar contraseña

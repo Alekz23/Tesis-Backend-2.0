@@ -4,6 +4,7 @@ const Usuario = require("../models/Usuario");
 const Lista = require("../models/Lista");
 const Eleccion = require("../models/Eleccion");
 const Candidato = require("../models/Candidato");
+const Cargo = require("../models/Cargo");
 
 
 
@@ -24,6 +25,9 @@ const emailExiste = async( correo = '' ) => {
     }
 }
 
+
+
+
 const existeUsuarioPorId = async( id ) => {
 
     // Verificar si el correo existe
@@ -33,6 +37,25 @@ const existeUsuarioPorId = async( id ) => {
     }
 }
 
+const existeCedulaUser = async( cedula='' ) => {
+
+    // Verificar si el correo existe
+    const existeCedula = await Usuario.findOne({ cedula });
+    console.log('llega a validar cedula', cedula)
+    if ( existeCedula ) {
+        throw new Error(`La cedula: ${ cedula }, ya está registrada`);
+    }
+}
+
+
+const existeCargoPorId = async( id ) => {
+
+    // Verificar si el correo existe
+    const existeCargo = await Cargo.findById(id);
+    if ( !existeCargo ) {
+        throw new Error(`El id cargo no existe ${ id }`);
+    }
+}
 /**
  * Categorias
  */
@@ -73,6 +96,8 @@ module.exports = {
     existeUsuarioPorId,
     existeEleccionPorId,
     existeListaPorId,
-    existeCandidatoPorId
+    existeCandidatoPorId,
+    existeCargoPorId,
+    existeCedulaUser
 }
 

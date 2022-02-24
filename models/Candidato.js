@@ -4,7 +4,7 @@ const CandidatoSchema = Schema({
     nombre: {
         type: String,
         required: true,
-        unique: true
+      
     },
     apellido: {
         type: String,
@@ -15,6 +15,9 @@ const CandidatoSchema = Schema({
         type: String,
         required: true,
         
+    },
+    img:{
+        type: String,
     },
     usuario: {
         type: Schema.Types.ObjectId,

@@ -6,7 +6,8 @@ const getElecciones = async( req, res = response ) => {
 
     const elecciones = await Eleccion.find()
                                 .populate('user','name')
-                                .populate('lists');
+                                .populate('lists')
+                                .populate('candidates');
 
     res.json({
         ok: true,
@@ -33,7 +34,7 @@ const crearEleccion = async ( req, res = response ) => {
     try {
 
         eleccion.usuario = req.uid;
-        console.log(eleccion.user, 'maldita manda eso')
+        //console.log(eleccion.user, 'maldita manda eso')
         
         const eleccionGuardado = await eleccion.save();
 

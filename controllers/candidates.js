@@ -6,9 +6,8 @@ const { addCandidate } = require('./lists');
 const getCandidatos = async( req, res = response ) => {
 
     const candidatos = await Candidato.find()
-                                .populate('user','name')
-                                .populate('lista', 'nombre');
-
+                                .populate('lista', 'nombre')
+                                
     res.json({
         ok: true,
         candidatos

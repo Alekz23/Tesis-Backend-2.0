@@ -23,6 +23,8 @@ app.use('/api/auth', require('./routes/auth') );
 app.use('/api/elecciones', require('./routes/elecciones') );
 app.use('/api/listas', require('./routes/listas') );
 app.use('/api/candidatos', require('./routes/candidatos') );
+app.use('/api/cargos', require('./routes/cargos') );
+
 
 
 
