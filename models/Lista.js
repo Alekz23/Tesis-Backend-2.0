@@ -25,6 +25,10 @@ const ListaSchema = Schema({
     img:{
         type: String,
     },
+    voteBN:{
+        type: Boolean,
+        default: false
+    },
     candidates:[{
         type: Schema.Types.ObjectId,
         ref: 'Candidato'

@@ -20,6 +20,11 @@ const UsuarioSchema = Schema({
         required: true
     },
     
+    vote:{
+        type: Boolean,
+        default: false
+    },
+    
     rol: {
         type: String,
         required: true,

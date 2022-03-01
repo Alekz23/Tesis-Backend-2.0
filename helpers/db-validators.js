@@ -68,6 +68,16 @@ const existeEleccionPorId = async( id ) => {
     }
 }
 
+
+const existeLista = async( nombre='' ) => {
+
+    // Verificar si el correo existe
+    const existeLista = await Lista.findOne({ nombre });
+  
+    if ( existeLista ) {
+        throw new Error(`La ${ nombre }, ya está registrada`);
+    }
+}
 /**
  * Productos
  */
@@ -98,6 +108,7 @@ module.exports = {
     existeListaPorId,
     existeCandidatoPorId,
     existeCargoPorId,
-    existeCedulaUser
+    existeCedulaUser,
+    existeLista 
 }
 

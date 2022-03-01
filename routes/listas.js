@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 const { getListas, crearLista, actualizarLista, eliminarLista, getListasEleccion, getLista } = require('../controllers/lists');
-const { existeListaPorId, existeEleccionPorId } = require('../helpers/db-validators');
+const { existeListaPorId, existeEleccionPorId, existeLista } = require('../helpers/db-validators');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
@@ -31,6 +31,7 @@ router.post('/', [
     check('nombre','El nombre es obligatorio').not().isEmpty(),
     check('eleccion','No es un id de Mongo').isMongoId(),
     check('eleccion').custom( existeEleccionPorId ),
+    check('nombre').custom( existeLista ),
     validarCampos
 ], crearLista );
 
