@@ -29,7 +29,7 @@ const crearUsuario = async(req, res = response ) => {
         await usuario.save();
 
         // Generar JWT
-        const token = await generarJWT( usuario.id, usuario.nombre );
+        const token = await generarJWT( usuario.id, usuario.nombre, usuario.rol);
     
         res.status(201).json({
             ok: true,
@@ -56,6 +56,9 @@ const loginUsuario = async(req, res = response ) => {
         
         const usuario = await Usuario.findOne({ correo });
 
+       
+
+
         if ( !usuario ) {
             return res.status(400).json({
                 ok: false,
@@ -73,8 +76,17 @@ const loginUsuario = async(req, res = response ) => {
             });
         }
 
+         //confirmar si el ususario ya dio el votos
+         if ( usuario.vote===true ) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'El usuario ya ha votado!'
+            });
+        }
+
+
         // Generar JWT
-        const token = await generarJWT( usuario.id, usuario.nombre );
+        const token = await generarJWT( usuario.id, usuario.nombre, usuario.rol, usuario.cedula);
 
         res.json({
             ok: true,
@@ -99,14 +111,16 @@ const loginUsuario = async(req, res = response ) => {
 
 const revalidarToken = async (req, res = response ) => {
 
-    const { uid, nombre } = req;
+    const { uid, nombre,rol, cedula } = req;
 
     // Generar JWT
-    const token = await generarJWT( uid, nombre );
+    const token = await generarJWT( uid, nombre,rol, cedula);
 
     res.json({
         ok: true,
         uid, nombre,
+        rol,
+        cedula,
         token
     })
 }
