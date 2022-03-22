@@ -22,7 +22,7 @@ router.post(
         check('correo', 'El email es obligatorio').isEmail(),
         check('cedula').custom( existeCedulaUser ), //busca en la bdd si existe esa lista 
         check('cedula', 'La cedula debe tener 10 caracteres').isLength({ min: 10 }),
-        check('password', 'El password debe de ser de 6 caracteres').isLength({ min: 6 }),
+        check('password', 'La contraseña debe de ser mayor a 6 caracteres').isLength({ min: 6 }),
         validarCampos
     ],
     crearUsuario 
@@ -31,8 +31,8 @@ router.post(
 router.post(
     '/login',
     [
-        check('correo', 'El email es obligatorio').isEmail(),
-        check('password', 'El password debe de ser de 6 caracteres').isLength({ min: 6 }),
+        check('correo', 'El correo es obligatorio').isEmail(),
+        check('password', 'La contraseña debe de ser mayor a 6 caracteres').isLength({ min: 6 }),
         validarCampos
     ],
     loginUsuario 

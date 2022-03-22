@@ -3,41 +3,41 @@ const bcrypt = require('bcryptjs');
 const Usuario = require('../models/Usuario');
 const { generarJWT } = require('../helpers/jwt');
 const bcryptjs = require('bcryptjs');
- 
-const crearUsuario = async(req, res = response ) => {
 
-    const { correo, password, cedula} = req.body;
+const crearUsuario = async (req, res = response) => {
+
+    const { correo, password, cedula } = req.body;
 
     try {
         let usuario = await Usuario.findOne({ correo });
 
-        if ( usuario ) {
+        if (usuario) {
             return res.status(400).json({
                 ok: false,
                 msg: 'El usuario ya existe'
             });
         }
 
-       
-        usuario = new Usuario( req.body );
-    
+
+        usuario = new Usuario(req.body);
+
         // Encriptar contraseña
         const salt = bcrypt.genSaltSync();
-        usuario.password = bcrypt.hashSync( password, salt );
+        usuario.password = bcrypt.hashSync(password, salt);
 
 
         await usuario.save();
 
         // Generar JWT
-        const token = await generarJWT( usuario.id, usuario.nombre, usuario.rol);
-    
+        const token = await generarJWT(usuario.id, usuario.nombre, usuario.rol);
+
         res.status(201).json({
             ok: true,
             uid: usuario.id,
             name: usuario.nombre,
             token
         })
-        
+
     } catch (error) {
         console.log(error)
         res.status(500).json({
@@ -48,36 +48,36 @@ const crearUsuario = async(req, res = response ) => {
 }
 
 
-const loginUsuario = async(req, res = response ) => {
+const loginUsuario = async (req, res = response) => {
 
     const { correo, password } = req.body;
 
     try {
-        
+
         const usuario = await Usuario.findOne({ correo });
 
-       
 
 
-        if ( !usuario ) {
+
+        if (!usuario) {
             return res.status(400).json({
                 ok: false,
-                msg: 'El usuario no existe con ese email'
+                msg: 'El usuario no existe con ese correo'
             });
         }
 
         // Confirmar los passwords
-        const validPassword = bcrypt.compareSync( password, usuario.password );
+        const validPassword = bcrypt.compareSync(password, usuario.password);
 
-        if ( !validPassword ) {
+        if (!validPassword) {
             return res.status(400).json({
                 ok: false,
-                msg: 'Password incorrecto'
+                msg: 'Contraseña incorrecta'
             });
         }
 
-         //confirmar si el ususario ya dio el votos
-         if ( usuario.vote===true ) {
+        //confirmar si el ususario ya dio el votos
+        if (usuario.vote === true) {
             return res.status(400).json({
                 ok: false,
                 msg: 'El usuario ya ha votado!'
@@ -86,7 +86,7 @@ const loginUsuario = async(req, res = response ) => {
 
 
         // Generar JWT
-        const token = await generarJWT( usuario.id, usuario.nombre, usuario.rol, usuario.cedula);
+        const token = await generarJWT(usuario.id, usuario.nombre, usuario.rol, usuario.cedula);
 
         res.json({
             ok: true,
@@ -109,12 +109,12 @@ const loginUsuario = async(req, res = response ) => {
 }
 
 
-const revalidarToken = async (req, res = response ) => {
+const revalidarToken = async (req, res = response) => {
 
-    const { uid, nombre,rol, cedula } = req;
+    const { uid, nombre, rol, cedula } = req;
 
     // Generar JWT
-    const token = await generarJWT( uid, nombre,rol, cedula);
+    const token = await generarJWT(uid, nombre, rol, cedula);
 
     res.json({
         ok: true,
@@ -126,46 +126,49 @@ const revalidarToken = async (req, res = response ) => {
 }
 
 
-const getUsuarios = async( req, res = response ) => {
+const getUsuarios = async (req, res = response) => {
 
     const usuarios = await Usuario.find();
 
     res.json({
         ok: true,
-       usuarios
+        usuarios
     });
 }
 
 
-const actualizarUsuario = async( req, res = response ) => {
-    
-    const { id } = req.params;
-    const { _id, password, correo, ...resto } = req.body;
+const actualizarUsuario = async (req, res = response) => {
 
-    if ( password ) {
+    const { id } = req.params;
+    const {password} = req.body;
+    let updateUser= req.body;
+
+    if (password) {
         // Encriptar la contraseña
         const salt = bcryptjs.genSaltSync();
-        resto.password = bcryptjs.hashSync( password, salt );
+        updateUser.password = bcryptjs.hashSync(password, salt);
     }
     //console.log(resto, 'resto------');
-    const usuario = await Usuario.findByIdAndUpdate( id, resto );
+    console.log(updateUser, 'update');
+    const usuario = await Usuario.findByIdAndUpdate(id, updateUser);
 
     res.json({
         ok: true,
-        usuario});
+        usuario
+    });
 
 }
 
-const eliminarUsuario = async( req, res = response ) => {
+const eliminarUsuario = async (req, res = response) => {
 
     const usuarioId = req.params.id;
     //const uid = req.uid;
 
     try {
 
-        const usuario = await Usuario.findById( usuarioId );
+        const usuario = await Usuario.findById(usuarioId);
 
-        if ( !usuario ) {
+        if (!usuario) {
             return res.status(404).json({
                 ok: false,
                 msg: 'User no existe por ese id'
@@ -173,11 +176,11 @@ const eliminarUsuario = async( req, res = response ) => {
         }
 
 
-        await Usuario.findByIdAndDelete( usuarioId );
+        await Usuario.findByIdAndDelete(usuarioId);
 
         res.json({ ok: true });
 
-        
+
     } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -191,8 +194,8 @@ const eliminarUsuario = async( req, res = response ) => {
 
 module.exports = {
     crearUsuario,
-    actualizarUsuario, 
-    eliminarUsuario, 
+    actualizarUsuario,
+    eliminarUsuario,
     getUsuarios,
     loginUsuario,
     revalidarToken

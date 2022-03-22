@@ -32,7 +32,7 @@ router.get('/:id',[
 router.post('/', [ 
     validarJWT,
     check('nombre','El nombre es obligatorio').not().isEmpty(),
-    check('descripcion','La descripcion es obligatoria').not().isEmpty(),
+    check('descripcion','La descripción es obligatoria').not().isEmpty(),
     check('start','Fecha de inicio es obligatoria').custom( isDate ),
     check('end','Fecha de finalización es obligatoria').custom( isDate ),
     validarCampos
