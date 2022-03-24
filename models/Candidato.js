@@ -30,6 +30,8 @@ const CandidatoSchema = Schema({
         ref: 'Lista',
         required: true
     }
+
+    
 });
 
 
