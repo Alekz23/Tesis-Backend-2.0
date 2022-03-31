@@ -1,5 +1,5 @@
 const { verificarCedula } = require('udv-ec');
-
+//bdd mern_voteRelations
 const keccak256 = require('keccak256')
 const cedula = '1004147003';
 
