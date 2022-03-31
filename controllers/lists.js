@@ -62,11 +62,23 @@ const crearLista = async (req, res = response) => {
 const actualizarLista = async (req, res = response) => {
 
     const listaId = req.params.id;
+    // const { nombre } = req.body;
     const uid = req.uid;
 
     try {
 
+        
         const lista = await Lista.findById(listaId);
+        // const name = await Lista.findOne({ nombre });
+
+
+        // if (name) {
+        //     return res.status(404).json({
+        //         ok: false,
+        //         msg: `Ya existe la ${nombre}!`
+        //     });
+        // }
+
 
         if (!lista) {
             return res.status(404).json({

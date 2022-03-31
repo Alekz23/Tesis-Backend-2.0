@@ -4,7 +4,6 @@ const ListaSchema = Schema({
     nombre: {
         type: String,
         required: true,
-        unique: true
     },
     descripcion: {
         type: String,
@@ -26,6 +25,10 @@ const ListaSchema = Schema({
         type: String,
     },
     voteBN:{
+        type: Boolean,
+        default: false
+    },
+    agregado:{
         type: Boolean,
         default: false
     },

@@ -15,9 +15,19 @@ const getCargos = async (req, res = response) => {
 const crearCargo = async (req, res = response) => {
 
     const cargo = new Cargo(req.body);
-    //const lista = req.body.lista;
+    const {nombre} = req.body;
 
     try {
+
+        const name = await Cargo.findOne({ nombre });
+
+
+        if (name) {
+            return res.status(404).json({
+                ok: false,
+                msg: `Ya existe el cargo ${nombre}!`
+            });
+        }
 
         cargo.usuario = req.uid;
 

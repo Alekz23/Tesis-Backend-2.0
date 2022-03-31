@@ -31,14 +31,14 @@ router.post('/', [
     check('nombre','El nombre es obligatorio').not().isEmpty(),
     check('eleccion','No es un id de Mongo').isMongoId(),
     check('eleccion').custom( existeEleccionPorId ),
-    check('nombre').custom( existeLista ),
+    //check('nombre').custom( existeLista ),
     validarCampos
 ], crearLista );
 
 // Actualizar - privado - cualquiera con token válido
 router.put('/:id',[
     validarJWT,
-    check('nombre','El nombre es obligatorio').not().isEmpty(),
+    //check('nombre','El nombre es obligatorio').not().isEmpty(),
     check('id','No es un id de Mongo').isMongoId(),
     check('id').custom( existeListaPorId ),
     validarCampos
